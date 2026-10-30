@@ -9,7 +9,7 @@ body {
 }
 
 header {
-    background: #983131;
+    background: #a34444;
     color: #fff;
     padding: 1rem;
     display: flex;
@@ -44,3 +44,27 @@ main {
     box-shadow: 0 4px 10px rgba(0, 0, 0, .15);
 }
 
+.card img {
+    width: 100%;
+    height: 130px;
+    object-fit: contain;
+}
+
+aside>div {
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+}
+
+button {
+    cursor: pointer;
+    padding: 0.3rem 0.6rem;
+}
+
+@media (max-width: 800px) {
+    main {
+        grid-template-columns: 1fr;
+    }
+}
