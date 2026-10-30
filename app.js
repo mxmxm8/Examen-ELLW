@@ -115,60 +115,39 @@ function showStatus(htmlMessage, isError = false) {
     statusEl.innerHTML = htmlMessage;
 }
 
+function crearCharacterCard(character) {
+    const card = document.createElement("article");
+    card.className = "character-card";
 
+    const charId = character.id !== undefined && character.id !== null
+        ? String(character.id)
+        : getCharacterName(character);
 
+    const charName = getCharacterName(character);
+    const charImage = getCharacterImage(character);
+    const activeBounty = getFirstActiveBounty(character);
 
+    const imgWrapper = document.createElement("div");
+    imgWrapper.className = "image-wrapper";
 
+    const img = document.createElement("img");
+    img.src = charImage;
+    img.alt = `Imatge de ${charName}`;
+    img.loading = "lazy";
+    img.onerror = function () {
+        this.onerror = null;
+        this.src = FALLBACK_IMAGE;
+    };
+    imgWrapper.appendChild(img);
+    card.appendChild(imgWrapper);
 
+    const title = document.createElement("h3");
+    title.textContent = charName;
+    title.title = charName;
+    card.appendChild(title);
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    
+}
 
 async function loadCharacters(page) {
     const container = document.getElementById("cards-container");
