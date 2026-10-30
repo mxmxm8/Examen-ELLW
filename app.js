@@ -1,5 +1,9 @@
+//Api server
 const API_BASE_URL = "http://localhost:3000/api/onepiece/characters";
+
+//Limit per pagina
 const CHARACTERS_PER_PAGE = 10;
+
 
 let currentPage = 1;
 const capturedPirates = new Map();
@@ -45,4 +49,105 @@ function parseBountyAmount(amount) {
     }
     return 0;
 }
+
+function formatBounty(amount) {
+    const numeric = parseBountyAmount(amount);
+    return `${numeric.toLocaleString("ca-ES")} $`;
+}
+
+function updateBountyCounterUI() {
+    let totalAccumulated = 0;
+    for (const pirate of capturedPirates.values()) {
+        totalAccumulated += pirate.amount;
+    }
+
+    const totalEl = document.getElementById("total-bounty");
+    if (totalEl) {
+        totalEl.textContent = `${totalAccumulated.toLocaleString("ca-ES")} ฿`;
+    }
+
+    const countEl = document.getElementById("captured-count");
+    if (countEl) {
+        const count = capturedPirates.size;
+        countEl.textContent = `${count} pirate${count === 1 ? '' : 's'}`;
+    }
+}
+
+//prev/next/pagina
+function updatePaginationUI(hasMoreItems) {
+    const isFirstPage = currentPage <= 1;
+
+    const prevButtons = [
+        document.getElementById("prev-btn"),
+        document.getElementById("prev-btn-bottom")
+    ];
+    prevButtons.forEach(btn => {
+        if (btn) btn.disabled = isFirstPage;
+    });
+
+    const nextButtons = [
+        document.getElementById("next-btn"),
+        document.getElementById("next-btn-bottom")
+    ];
+    nextButtons.forEach(btn => {
+        if (btn) btn.disabled = !hasMoreItems;
+    });
+
+    const pageIndicators = [
+        document.getElementById("page-indicator"),
+        document.getElementById("page-indicator-bottom")
+    ];
+    pageIndicators.forEach(ind => {
+        if (ind) ind.textContent = `Pàgina ${currentPage}`;
+    });
+}
+
+
+async function loadCharacters(page) {
+    const container = document.getElementById("cards-container");
+    if (!container) return;
+
+    container.innerHTML = "";
+    showStatus("Carregant characters");
+
+    try {
+        const characters = await getCharacters(page, CHARACTERS_PER_PAGE);
+        showStatus("");
+
+        if (!characters || characters.length === 0) {
+            container.innerHTML = "<p class='empty-message'>No s'han trobat més personatges en aquesta pàgina.</p>";
+            updatePaginationUI(false);
+            return;
+        }
+
+        const fragment = document.createDocumentFragment();
+        characters.forEach(character => {
+            const card = createCharacterCard(character);
+            fragment.appendChild(card);
+        });
+        container.appendChild(fragment);
+
+        updatePaginationUI(characters.length === CHARACTERS_PER_PAGE);
+    } catch (error) {
+        console.error("Error en carregar personatges:", error);
+        const retryBtn = document.getElementById("retry-btn");
+        if (retryBtn) {
+            retryBtn.onclick = () => loadCharacters(currentPage);
+        }
+        updatePaginationUI(false);
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
 
