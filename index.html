@@ -1,27 +1,44 @@
 <!DOCTYPE html>
 <html lang="ca">
-<head>
-  <link rel="stylesheet" href="style.css">
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Examen One Piece</title>
-  <script src="app.js"></script>
-</head>
-<body>
-  <header>
-    <h1>One Piece</h1>
-    <input id="search" placeholder="Buscar...">
-    <select id="category"></select>
 
-  </header>
-   <main>
-<section id="list"></section>
-    <aside>
-      <div id="detail">Selecciona un personaje</div>
-      <div id="cart"></div>
-    </aside>
-  </main>
-  <script src="app.js" defer></script>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>One Piece (Recompenses)</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css?v=3">
+    <script src="app.js" defer></script>
+</head>
+
+<body>
+    <header class="sticky-header">
+        <div class="header-content">
+            <div class="title-group">
+                <h1>One Piece Recompenses</h1>
+            </div>
+            <div class="bounty-counter" id="bounty-counter-container" aria-live="polite">
+                <span class="counter-label">Recompensa Total:</span>
+                <span class="counter-value" id="total-bounty">0 $</span>
+                <span class="counter-badge" id="captured-count">0 pirates</span>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <nav class="pagination-controls" aria-label="Navegació de personatges">
+            <button id="prev-btn" class="btn btn-nav" disabled>Anterior</button>
+            <span id="page-indicator" class="page-indicator">Pàgina 1</span>
+            <button id="next-btn" class="btn btn-nav">Següent</button>
+        </nav>
+
+        <div id="status-message" class="status-message" style="display: none;"></div>
+
+        <section id="cards-container" class="cards-container" aria-label="Llista de personatges"></section>
+
+    </main>
+
 </body>
+
 </html>
-</main>
